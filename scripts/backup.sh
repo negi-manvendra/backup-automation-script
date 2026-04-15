@@ -18,7 +18,7 @@ log() {
 
 error_exit() {
     local MESSAGE="$1"
-    log "ERROR: $MESSAGE"=[]
+    log "ERROR: $MESSAGE"
     echo "ERROR: $MESSAGE"
     exit 1
 }
