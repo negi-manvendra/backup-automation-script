@@ -2,6 +2,8 @@
 
 set -e
 
+export PATH=/usr/bin:/bin:/usr/sbin:/sbin
+
 SOURCE_DIR="$1"
 BASE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 BACKUP_DIR="$BASE_DIR/backups"
@@ -24,7 +26,7 @@ error_exit() {
 }
 
 if [ -z "$SOURCE_DIR" ]; then
-    error_exit "No source directory provided. Usage: ./backup.sh /path/to/source"
+    error_exit "No source directory provided"
 fi
 
 if [ ! -d "$SOURCE_DIR" ]; then
@@ -36,9 +38,8 @@ mkdir -p "$LOG_DIR"
 
 log "Backup started for directory: $SOURCE_DIR"
 
-if tar -czf "$BACKUP_FILE" "$SOURCE_DIR" 2>> "$LOG_FILE"; then
+if tar -czf "$BACKUP_FILE" "$SOURCE_DIR" >> "$LOG_FILE" 2>&1; then
     log "Backup successful: $BACKUP_FILE"
-    echo "Backup created successfully: $BACKUP_FILE"
 else
     error_exit "Backup failed for directory: $SOURCE_DIR"
 fi
